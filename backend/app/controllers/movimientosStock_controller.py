@@ -48,12 +48,16 @@ class MovimientoStockController (Controller):
             error = 'El producto_id es requerido'
         if user_id is None:
             error = 'El user_id es requerido'
+        
+        #Definimos si el stock actual de producto es menor a la cantidad que se desea agregar
+        #e igualmente definimos si es tipo 'salida'
         producto = db.session.get(Producto, producto_id)
         if producto.stock_actual < cantidad and tipo == 'salida':
             error = 'No hay suficiente stock'
         
         if error is None:
             try:
+                #Ya dentro definimos si es es 'entrada' o 'salida' y agregamos o descontamos el stock
                 if tipo == 'salida':
                     producto.stock_actual = producto.stock_actual - cantidad
                 else:
